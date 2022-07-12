@@ -4,12 +4,18 @@ import path from "path";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { bucketName, fileName, filePath, folderName, folderZipName } from "./config.js";
 import archiver from "archiver";
+import { format } from "date-fns/fp";
 
-const filePathToZip = `${filePath}/${fileName}`;
-const fileNameOfZip = `${fileName}.${new Date().getDate()}.zip`;
+const fileExt = 'txt';
+const filePathToZip = `data/${fileName}.${fileExt}`;
+let fileNameOfZip = `day/${fileName}.${new Date().getDate()}.zip`;
 
 process(filePathToZip, fileNameOfZip, bucketName);
 
+if(new Date().getDate() == 1){
+    fileNameOfZip = `month/${fileName}.${format(new Date(), "yyyy-MM-dd")}.zip`;
+    process(filePathToZip, fileNameOfZip, bucketName);
+}
 
 async function process(filePathToZip, fileNameOfZip, bucketName) {
     let zipBuffer = await zipFile(filePathToZip);
