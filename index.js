@@ -2,11 +2,10 @@ import JSZip from "jszip";
 import fs from "fs";
 import path from "path";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { bucketName, fileName, folderName, folderZipName } from "./config.js";
+import { bucketName, fileName, filePath, folderName, folderZipName } from "./config.js";
 import archiver from "archiver";
 
-const fileExt = 'txt';
-const filePathToZip = `data/${fileName}.${fileExt}`;
+const filePathToZip = `${filePath}/${fileName}`;
 const fileNameOfZip = `${fileName}.${new Date().getDate()}.zip`;
 
 process(filePathToZip, fileNameOfZip, bucketName);
@@ -16,7 +15,7 @@ async function process(filePathToZip, fileNameOfZip, bucketName) {
     let zipBuffer = await zipFile(filePathToZip);
     await uploadZipToS3v2(zipBuffer, bucketName, fileNameOfZip);
 
-    zipBuffer = await zipFolder(folderName, uploadToS3Callback);
+    // zipBuffer = await zipFolder(folderName, uploadToS3Callback);
 }
 
 async function uploadToS3Callback(zipBuffer){
