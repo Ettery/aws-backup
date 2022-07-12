@@ -4,10 +4,9 @@ import path from "path";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { bucketName, fileName, filePath, folderName, folderZipName } from "./config.js";
 import archiver from "archiver";
-import { format } from "date-fns/fp";
+import { format } from "date-fns";
 
-const fileExt = 'txt';
-const filePathToZip = `data/${fileName}.${fileExt}`;
+const filePathToZip = `${filePath}/${fileName}`;
 let fileNameOfZip = `day/${fileName}.${new Date().getDate()}.zip`;
 
 process(filePathToZip, fileNameOfZip, bucketName);
